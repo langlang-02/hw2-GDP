@@ -7,10 +7,15 @@ class GDPGraphApp:
     def __init__(self, root):
         self.root = root
         self.root.title("GDP 时间段选择")
+        self.root.geometry("300x300")
+        
+        # 设置GUI窗口大小和位置
+        self.root.geometry("600x400+100+100")  # 窗口位置设置为左上角
+        # 宽度为600px，高度为400px，位置在屏幕左上角 (100, 100)
 
         # 默认国家列表，初始时只有一个国家
         self.countries = ['USA']
-        self.gdp_data = {country: GDPData(country) for country in self.countries}
+        self.gdp_data = {country: GDPData(country) for country in self.countries}   #定义了一个字典
         self.data = {country: self.gdp_data[country].get_gdp_data() for country in self.countries}
 
         # 设置初始时间段
@@ -55,33 +60,36 @@ class GDPGraphApp:
         
         #不使用弹出输入框，直接从Entry获取国家名称
         country_name = self.country_entry.get().strip()
-        # if country_name:
-        #     try:
-        #         # Fetch GDP data for the entered country
-        #         economic_data = GDPData(country_name)
-        #         gdp_data = economic_data.get_gdp_data()
-
-        #         if gdp_data is not None:
-        #             self.economic_data_list.append((country_name, gdp_data))
-        #             print(f"Added GDP data for {country_name}")
-        #             self.plot_data()
-        #         else:
-        #             print(f"No GDP data found for {country_name}")
-        #     except Exception as e:
-        #         print(f"Error fetching data for {country_name}: {e}")
-        # else:
-        #     print("Please enter a country name.")
-
 
 
         if country_name and country_name not in self.countries:
-            # 如果输入的国家有效并且不在已有国家列表中
-            self.countries.append(country_name)
-            self.gdp_data[country_name] = GDPData(country_name)
-            self.data[country_name] = self.gdp_data[country_name].get_gdp_data()
+            try:
+                # Fetch GDP data for the entered country
+                economic_data = GDPData(country_name)
+                gdp_data = economic_data.get_gdp_data()
 
-            # 更新图表
-            self.update_plot()
+                if gdp_data is not None:
+                    # 如果输入的国家有效并且不在已有国家列表中
+                    self.countries.append(country_name)
+                    self.gdp_data[country_name] = economic_data
+                    self.data[country_name] = gdp_data
+
+                    # 更新图表
+                    self.update_plot()
+
+                    # 清空输入框
+                    self.country_entry.delete(0, tk.END)
+
+                    print(f"Added GDP data for {country_name}")
+                else:
+                    print(f"No GDP data found for {country_name}")
+            except Exception as e:
+                print(f"Error fetching data for {country_name}: {e}")            
+        else:
+            if country_name in self.countries  :
+                print('Country Already Added.')
+            else:
+                print("Please enter a country name.")
 
     def update_plot(self, event=None):
         # 获取当前滑动条选择的年份
@@ -110,6 +118,11 @@ class GDPGraphApp:
         plt.grid(True)
         plt.tight_layout()
         plt.legend()
+
+        # 调整图表位置，避免与GUI窗口重叠
+        # 获取当前图像窗口的句柄
+        fig = plt.gcf()
+        fig.canvas.manager.window.wm_geometry("+800+100")  # 设置图像窗口的位置
 
         # 显示图表
         plt.show()
