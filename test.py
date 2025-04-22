@@ -39,10 +39,41 @@ class GDPGraphApp:
         self.add_country_button = tk.Button(self.root, text="添加国家", command=self.add_country)
         self.add_country_button.pack(pady=10)
 
+        # Create input field for country name
+
+        #创建标签 （提示作用）
+        self.label = tk.Label(self.root, text="Enter country name:")
+        self.label.pack(pady=10)
+        
+        #创建输入框
+        self.country_entry = tk.Entry(self.root)
+        self.country_entry.pack(pady=10)
+
     def add_country(self):
         # 弹出输入框，获取用户输入的国家名称
-        country_name = simpledialog.askstring("输入国家", "请输入国家名称：")
+        # country_name = simpledialog.askstring("输入国家", "请输入国家名称：")
         
+        #不使用弹出输入框，直接从Entry获取国家名称
+        country_name = self.country_entry.get().strip()
+        # if country_name:
+        #     try:
+        #         # Fetch GDP data for the entered country
+        #         economic_data = GDPData(country_name)
+        #         gdp_data = economic_data.get_gdp_data()
+
+        #         if gdp_data is not None:
+        #             self.economic_data_list.append((country_name, gdp_data))
+        #             print(f"Added GDP data for {country_name}")
+        #             self.plot_data()
+        #         else:
+        #             print(f"No GDP data found for {country_name}")
+        #     except Exception as e:
+        #         print(f"Error fetching data for {country_name}: {e}")
+        # else:
+        #     print("Please enter a country name.")
+
+
+
         if country_name and country_name not in self.countries:
             # 如果输入的国家有效并且不在已有国家列表中
             self.countries.append(country_name)
