@@ -15,12 +15,15 @@ class GDPGraphApp:
 
         # 默认国家列表，初始时只有一个国家
         self.countries = ['USA']
-        self.gdp_data = {country: GDPData(country) for country in self.countries}   #定义了一个字典
+        self.gdp_data = {country: GDPData(country) for country in self.countries}   #定义了一个字典 key为国家名称，value为GDPData对象
         self.data = {country: self.gdp_data[country].get_gdp_data() for country in self.countries}
 
         # 设置初始时间段
         self.start_year = 1990
         self.end_year = 2022
+
+        # 国家代码下拉菜单选项
+        self.country_codes = ['USA', 'CHN', 'DEU', 'IND', 'JPN', 'GBR', 'CAN', 'AUS', 'BRA', 'RUS']
 
         # 创建 GUI 元素
         self.create_widgets()
@@ -45,7 +48,6 @@ class GDPGraphApp:
         self.add_country_button.pack(pady=10)
 
         # Create input field for country name
-
         #创建标签 （提示作用）
         self.label = tk.Label(self.root, text="Enter country name:")
         self.label.pack(pady=10)
