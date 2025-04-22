@@ -37,6 +37,7 @@ class GDPGraphApp:
         # 创建一个绘制图表的按钮
         self.plot_button = tk.Button(self.root, text="更新图表", command=self.update_plot)
         self.plot_button.pack(pady=20)
+
     
     def update_plot(self, event=None):
         self.start_year = self.start_year_slider.get()
